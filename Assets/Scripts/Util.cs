@@ -6,6 +6,7 @@ using UnityEngine;
 
 public static class Util
 {
+    public static int TILE_SIZE = 64;
     public static object WeightedRandomDraw(object[] choices, float[] weights)
     {
         // Calculate an array of cumulative weights
@@ -80,5 +81,32 @@ public static class Util
 
         // Use that index to select the drawn choice and return it
         return choices[drawn_index];
+    }
+
+    public struct Coord2D
+    {
+        int x;
+        int y;
+
+        public Coord2D(int x_, int y_)
+        {
+            this.x = x_;
+            this.y = y_;
+        }
+    }
+
+    /// <summary>
+    /// Loads a json file by name from Assets/Resources/.
+    /// Borrowed directly from Allison Liem.
+    /// https://allison-liem.medium.com/unity-reading-external-json-files-878ed0978977
+    /// </summary>
+    /// <typeparam name="T">A type into which to coerce the loaded data.</typeparam>
+    /// <param name="path">The name of the json file in question, including path from /Resources/ and excluding its .json extension.</param>
+    /// <returns></returns>
+    public static T ImportJson<T>(string path)
+    {
+        TextAsset textAsset = Resources.Load<TextAsset>(path);
+        //throw new Exception(textAsset.ToString());
+        return JsonUtility.FromJson<T>(textAsset.ToString());
     }
 }
